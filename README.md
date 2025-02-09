@@ -1,5 +1,11 @@
 # Iron Cipher Mark I
 
+## Proof in Pixels
+![image](https://github.com/user-attachments/assets/82c13bba-b03e-414b-862d-47632b5e222c)
+![image](https://github.com/user-attachments/assets/aa9d0cf4-e1c1-452d-a685-bf55a994f418)
+![image](https://github.com/user-attachments/assets/62aaa98b-570e-47bb-a131-226b618e544e)
+
+
 ## Description
 
 Iron Cipher Mark I: your no-nonsense, simple encryption and decryption tool. Input a word, encrypt it using a basic cipher, and decrypt it back to the original using the same key. You can even decrypt other words with that key, keeping things flexible and secure.
