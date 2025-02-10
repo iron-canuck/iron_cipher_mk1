@@ -10,11 +10,13 @@
 ## Description
 
 Iron Cipher Mark I: your no-nonsense, simple encryption and decryption tool. Input a word, encrypt it using a basic cipher, and decrypt it back to the original using the same key. You can even decrypt other words with that key, keeping things flexible and secure.
+Now with a decoding feature, because sometimes, you've gotta break the code on your terms. Just enter the key in a JSON format, punch in the word, and let the Cipher handle the rest. Easy. Secure. Iron Canuck-approved.
 
 ## Features
 
 - **Encryption**: Enter a word, encrypt it, and watch the magic happen.
 - **Decryption**: Take that encrypted word, flip it, and get back to the real deal.
+- **Decoding**: Got a key? Decode any word encrypted with it—because why not make things even more flexible?
 - **Data Persistence**: Save that ciphered data in a neat JSON file for future reference.
 - **Sleek Interface**: Built with `customtkinter`—because we like things clean and smooth.
 
@@ -28,7 +30,8 @@ Iron Cipher Mark I: your no-nonsense, simple encryption and decryption tool. Inp
 1. **Launch the app**: `python ui.py`
 2. **Enter a word** in the "Encrypt" tab. Watch it get encrypted.
 3. **Switch over to "Decrypt"** to reverse it and get the original word back.
-
+4. **Switch to the "Decode" tab**. Enter the key in JSON format and a word to decode it—because sometimes you need to decode something other than what you’ve encrypted.
+   
 ## Creative Uses for Iron Cipher Mark I
 
 - **Teach Cryptography**: Break it down, show how simple ciphers work. Bonus points for using it to explain data security.
