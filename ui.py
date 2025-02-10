@@ -26,11 +26,17 @@ def get_tabview_state():
     if tabview.get() == 'Decrypt':
         encrypt_button.configure(text='Decrypt', command=decrypt)
         label.configure(text='')
+        error_label.configure(text='')
         # print('state:', tabview.get(), '\n')
-    else:
+    elif tabview.get() == 'Encrypt':
         encrypt_button.configure(text='Encrypt', command=encrypt)
         label.configure(text='')
+        error_label.configure(text='')
         # print('state:', tabview.get(), '\n')
+    else:
+        encrypt_button.configure(text='Decode', command=decode)
+        label.configure(text='')
+        error_label.configure(text='')
 
 
 # encryption method
@@ -114,15 +120,51 @@ def reset():
     output_textbox_encrypt.delete('1.0', 'end')
     input_textbox_decrypt.delete('1.0', 'end')
     output_textbox_decrypt.delete('1.0', 'end')
+    # entries are cleared differently
+    key_input_entry.delete(0, 'end')
+    text_input_decode.delete('1.0', 'end')
+    output_textbox_decode.delete('1.0', 'end')
     label.configure(text='')
+    error_label.configure(text='')
     cipher.clear()
+
+
+# function that decodes with key
+def decode():
+    threading.Thread(target=_decode, daemon=True).start()
+
+
+def _decode():
+    # before we start the process we wanna clear the textboxes
+    output_textbox_decode.delete('1.0', 'end')
+    error_label.configure(text='')
+
+    # 1- get the word that should be decoded
+    word = text_input_decode.get('1.0', 'end').strip()
+    # 2- get the json data
+    cipher = key_input_entry.get()
+    # 3- from the json data, find the first col in the json string
+    col_pos = cipher.find(':')
+    # create a new dictionary starting from 2 pos form col_pos, till the element before the last
+    # to get rid of the extra {}
+    cipher = cipher[col_pos+2:-1]       # now cipher is still a string.
+
+    try:
+        # convert cipher to a dictionary
+        cipher = json.loads(cipher)
+        result = core.decrypt(word, cipher)
+        output_textbox_decode.insert('1.0', result)
+    except:
+        # if the template is wrong show this message
+        error_label.configure(text='An Error Occured', text_color='red')
+        print('can not decode this')
 
 
 # create the CTk window
 app = customtkinter.CTk()
 app.geometry(APP_DIMENSIONS)
 app.title('Iron Cipher Mark I')
-app.resizable(width=False, height=False)
+app.resizable(width=False, height=True)
 
 # create a Label that will display error messages to the user
 label = customtkinter.CTkLabel(app, pady=5, text='')
@@ -137,6 +179,7 @@ tabview.pack()
 # add two tabs
 tabview.add('Encrypt')
 tabview.add('Decrypt')
+tabview.add('Decode')
 
 # design the first tab view
 input_textbox_encrypt = customtkinter.CTkTextbox(master=tabview.tab('Encrypt'), width=int(APP_WIDTH*0.416), height=int(APP_HEIGHT*0.57))
@@ -147,6 +190,7 @@ output_textbox_encrypt = customtkinter.CTkTextbox(master=tabview.tab('Encrypt'),
                                                   )
 output_textbox_encrypt.grid(row=0, column=1, padx=10, pady=10)
 
+
 # design the second tab view
 input_textbox_decrypt = customtkinter.CTkTextbox(master=tabview.tab('Decrypt'), width=int(APP_WIDTH*0.416), height=int(APP_HEIGHT*0.57))
 input_textbox_decrypt.grid(row=0,column=0,padx=10,pady=10)
@@ -155,6 +199,28 @@ output_textbox_decrypt = customtkinter.CTkTextbox(master=tabview.tab('Decrypt'),
                                                   # state='disabled'
                                                   )
 output_textbox_decrypt.grid(row=0, column=1, padx=10, pady=10)
+
+# design the third tabview
+key_label = customtkinter.CTkLabel(master=tabview.tab('Decode'), text='Key in JSON Format', font=('Arial', 12), width=int(APP_WIDTH*0.416), text_color='#00ff00')
+key_label.pack(pady=3)
+
+key_input_entry = customtkinter.CTkEntry(master=tabview.tab('Decode'))
+key_input_entry.pack(pady=3)
+
+key_label = customtkinter.CTkLabel(master=tabview.tab('Decode'), text='Your Text', text_color='#00ff00')
+key_label.pack()
+
+text_input_decode = customtkinter.CTkTextbox(master=tabview.tab('Decode'), width=int(APP_WIDTH*0.416), height=int(APP_HEIGHT*0.15))
+text_input_decode.pack(pady=5)
+
+result_label = customtkinter.CTkLabel(master=tabview.tab('Decode'), text='Result', text_color='#00ff00')
+result_label.pack()
+
+output_textbox_decode = customtkinter.CTkTextbox(master=tabview.tab('Decode'), width=int(APP_WIDTH*0.416), height=int(APP_HEIGHT*0.15))
+output_textbox_decode.pack(pady=5)
+
+error_label = customtkinter.CTkLabel(master=tabview.tab('Decode'), text='')
+error_label.pack()
 
 # add a frame that will hold the buttons
 button_frame = customtkinter.CTkFrame(app, fg_color='transparent')
