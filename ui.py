@@ -164,7 +164,7 @@ def _decode():
 app = customtkinter.CTk()
 app.geometry(APP_DIMENSIONS)
 app.title('Iron Cipher Mark I')
-app.resizable(width=False, height=True)
+app.resizable(width=False, height=False)
 
 # create a Label that will display error messages to the user
 label = customtkinter.CTkLabel(app, pady=5, text='')
